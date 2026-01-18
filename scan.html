@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html dir="rtl">
+<head>
+    <title>سکانەری دووکان</title>
+    <script src="https://unpkg.com/html5-qrcode"></script>
+    <style>
+        body { font-family: sans-serif; text-align: center; padding: 20px; }
+        #reader { width: 300px; margin: auto; }
+        .result-box { margin-top: 20px; padding: 20px; border: 2px solid #25D366; border-radius: 10px; display: none; }
+    </style>
+</head>
+<body>
+    <h2>سکانەری نرخی کاڵاکان</h2>
+    <div id="reader"></div>
+    <div id="result" class="result-box">
+        <h3 id="item-name"></h3>
+        <p id="item-price" style="font-size: 24px; color: blue;"></p>
+    </div>
+
+    <script>
+        // لیستی کاڵاکانت لێرە دابنێ
+        const products = {
+            "12345678": { name: "ئایفۆن ١٥", price: "900$" },
+            "87654321": { name: "سەماعەی بلوتوس", price: "25$" }
+        };
+
+        function onScanSuccess(decodedText) {
+            document.getElementById('result').style.display = 'block';
+            if (products[decodedText]) {
+                document.getElementById('item-name').innerText = products[decodedText].name;
+                document.getElementById('item-price').innerText = "نرخ: " + products[decodedText].price;
+            } else {
+                document.getElementById('item-name').innerText = "ئەم کاڵایە بوونی نییە";
+                document.getElementById('item-price').innerText = "کۆد: " + decodedText;
+            }
+        }
+
+        let html5QrcodeScanner = new Html5QrcodeScanner("reader", { fps: 10, qrbox: 250 });
+        html5QrcodeScanner.render(onScanSuccess);
+    </script>
+</body>
+</html>
